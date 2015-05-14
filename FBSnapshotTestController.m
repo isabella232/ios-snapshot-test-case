@@ -190,21 +190,24 @@ typedef struct RGBAPixel {
 										 identifier:identifier
 									   fileNameType:FBTestSnapshotFileNameTypeFailedReference];
 	NSLog(@"Failed Image");
-	NSLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
+	NSString *output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
+	system([output UTF8String]);
 	
 	fileName = [self _fileNameForSelector:selector
 							   identifier:identifier
 							 fileNameType:FBTestSnapshotFileNameTypeReference];
 	
 	NSLog(@"Reference Image");
-	NSLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
+	output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
+	system([output UTF8String]);
 	
 	fileName = [self _fileNameForSelector:selector
 							   identifier:identifier
 							 fileNameType:FBTestSnapshotFileNameTypeFailedTestDiff];
 	
 	NSLog(@"Diff Image");
-	NSLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
+	output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
+	system([output UTF8String]);
 }
 
 - (BOOL)compareReferenceImage:(UIImage *)referenceImage toImage:(UIImage *)image error:(NSError **)errorPtr
