@@ -173,10 +173,38 @@ typedef struct RGBAPixel {
     return NO;
   }
 
-  NSLog(@"If you have Kaleidoscope installed you can run this command to see an image diff:\n"
-        @"ksdiff \"%@\" \"%@\"", referencePath, testPath);
+	if ([[[[NSProcessInfo processInfo] environment] objectForKey:@"BUILDKITE_INLINE_IMAGE"] isEqualToString:@"true"]) {
+		[self outputInlineImagesForSelector:selector identifier:identifier];
+	} else {
+		NSLog(@"If you have Kaleidoscope installed you can run this command to see an image diff:\n"
+			  @"ksdiff \"%@\" \"%@\"", referencePath, testPath);
+	}
+
 
   return YES;
+}
+
+- (void)outputInlineImagesForSelector:(SEL)selector identifier:(NSString *)identifier
+{
+	NSString *fileName = [self _fileNameForSelector:selector
+										 identifier:identifier
+									   fileNameType:FBTestSnapshotFileNameTypeFailedReference];
+	NSLog(@"Failed Image");
+	NSLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
+	
+	fileName = [self _fileNameForSelector:selector
+							   identifier:identifier
+							 fileNameType:FBTestSnapshotFileNameTypeReference];
+	
+	NSLog(@"Reference Image");
+	NSLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
+	
+	fileName = [self _fileNameForSelector:selector
+							   identifier:identifier
+							 fileNameType:FBTestSnapshotFileNameTypeFailedTestDiff];
+	
+	NSLog(@"Diff Image");
+	NSLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
 }
 
 - (BOOL)compareReferenceImage:(UIImage *)referenceImage toImage:(UIImage *)image error:(NSError **)errorPtr
