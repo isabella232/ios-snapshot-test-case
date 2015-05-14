@@ -8,6 +8,12 @@
  *
  */
 
+#if __has_feature(objc_arc)
+#define MDLog(format, ...) CFShow((__bridge CFStringRef)[NSString stringWithFormat:format, ## __VA_ARGS__]);
+#else
+#define MDLog(format, ...) CFShow([NSString stringWithFormat:format, ## __VA_ARGS__]);
+#endif
+
 #import "FBSnapshotTestController.h"
 
 #import "UIImage+Compare.h"
@@ -190,25 +196,19 @@ typedef struct RGBAPixel {
 										 identifier:identifier
 									   fileNameType:FBTestSnapshotFileNameTypeFailedReference];
 	NSLog(@"Failed Image");
-	NSString *output = [NSString stringWithFormat:@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
-	printf("%s", [output UTF8String]);
+	MDLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
 	
 	fileName = [self _fileNameForSelector:selector
 							   identifier:identifier
 							 fileNameType:FBTestSnapshotFileNameTypeReference];
-	
 	NSLog(@"Reference Image");
-	printf("%s", [fileName UTF8String]);
-	output = [NSString stringWithFormat:@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
-	printf("%s", [output UTF8String]);
+	MDLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
 	
 	fileName = [self _fileNameForSelector:selector
 							   identifier:identifier
 							 fileNameType:FBTestSnapshotFileNameTypeFailedTestDiff];
-	
 	NSLog(@"Diff Image");
-	output = [NSString stringWithFormat:@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
-	printf("%s", [output UTF8String]);
+	MDLog(@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName);
 }
 
 - (BOOL)compareReferenceImage:(UIImage *)referenceImage toImage:(UIImage *)image error:(NSError **)errorPtr
