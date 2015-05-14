@@ -190,7 +190,7 @@ typedef struct RGBAPixel {
 										 identifier:identifier
 									   fileNameType:FBTestSnapshotFileNameTypeFailedReference];
 	NSLog(@"Failed Image");
-	NSString *output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
+	NSString *output = [NSString stringWithFormat:@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
 	printf("%s\n", [output UTF8String]);
 	
 	fileName = [self _fileNameForSelector:selector
@@ -198,7 +198,7 @@ typedef struct RGBAPixel {
 							 fileNameType:FBTestSnapshotFileNameTypeReference];
 	
 	NSLog(@"Reference Image");
-	output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
+	output = [NSString stringWithFormat:@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
 	printf("%s\n", [output UTF8String]);
 	
 	fileName = [self _fileNameForSelector:selector
@@ -206,7 +206,7 @@ typedef struct RGBAPixel {
 							 fileNameType:FBTestSnapshotFileNameTypeFailedTestDiff];
 	
 	NSLog(@"Diff Image");
-	output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
+	output = [NSString stringWithFormat:@"\033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
 	printf("%s\n", [output UTF8String]);
 }
 
