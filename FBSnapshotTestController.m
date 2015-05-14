@@ -191,7 +191,7 @@ typedef struct RGBAPixel {
 									   fileNameType:FBTestSnapshotFileNameTypeFailedReference];
 	NSLog(@"Failed Image");
 	NSString *output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
-	system([output UTF8String]);
+	printf("%s\n", [output UTF8String]);
 	
 	fileName = [self _fileNameForSelector:selector
 							   identifier:identifier
@@ -199,7 +199,7 @@ typedef struct RGBAPixel {
 	
 	NSLog(@"Reference Image");
 	output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
-	system([output UTF8String]);
+	printf("%s\n", [output UTF8String]);
 	
 	fileName = [self _fileNameForSelector:selector
 							   identifier:identifier
@@ -207,7 +207,7 @@ typedef struct RGBAPixel {
 	
 	NSLog(@"Diff Image");
 	output = [NSString stringWithFormat:@"echo \033]1338;url='\"artifacts://artifacts/%@\"';alt='\"%@\"'\a\n", fileName, fileName];
-	system([output UTF8String]);
+	printf("%s\n", [output UTF8String]);
 }
 
 - (BOOL)compareReferenceImage:(UIImage *)referenceImage toImage:(UIImage *)image error:(NSError **)errorPtr
